@@ -1,0 +1,21 @@
+﻿
+@model IEnumerable<PhotoServiceModel>
+
+@{
+    ViewData["Title"] = "My Photos";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+@if (Model.Any() == false)
+{
+    <h3 class="text-center">You have no photos yet!</h3>
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <partial name="_PhotoPartial" model="@item" />
+    }
+</div>

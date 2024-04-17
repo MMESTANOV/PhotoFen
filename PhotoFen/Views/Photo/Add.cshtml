@@ -1,0 +1,14 @@
+﻿@model AddPhotoFormModel
+
+@{
+    ViewBag.Title = "Add Photo";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<partial name="_PhotoFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

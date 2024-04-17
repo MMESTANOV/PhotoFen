@@ -1,0 +1,88 @@
+﻿@using PhotoFen.Extensions
+
+@model IEnumerable<PhotoIndexServiceModel>
+
+@inject IPhotographerService photographerService
+
+@{
+    ViewData["Title"] = "Home Page";
+    var photos = Model.ToList();
+}
+
+@if (!photos.Any())
+{
+    <div class="mt-4 p-5 bg-light">
+        <h1 class="display-4 text-center">Welcome to the world of photography!</h1>
+        <p class="lead text-center">
+            Here you can see interesting photos and share your own.
+        </p>
+        <hr class="my-4">
+        <p class="lead">
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-controller="Photo" asp-action="All" class="btn btn-primary btn-lg" role="button">All Photos</a>
+            }
+            @if (await photographerService.ExistsPhotographerByIdAsync(User.Id()))
+            {
+                <a asp-controller="Photo" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Photo</a>
+            }
+        </p>
+       
+
+    </div>
+}
+
+<div class="mb-5"></div>
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @for (int i = 0; i < photos.Count(); i++)
+        {
+            var photo = photos[i];
+            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                <img class="d-block w-100" style="height:500px"
+                 src="@photo.Title" alt="@photo.Title">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>
+                        <a class="btn btn-primary" asp-controller="Photo" asp-action="Details"
+                           asp-route-id="@photo.Id" asp-route-information="@photo.GetInformation()"> @photo.Title</a>
+                    </h5>
+                </div>
+            </div>
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<div class="mb-5"></div>
+
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary" id="statistics-button">Show Statistics</button>
+    </div>
+</div>
+
+<div class="mt-4 p-5 bg-light d-none" id="statistics">
+    <div class="row">
+        <h2 class="col-md-2 text-center" id="total-photos"></h2>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#statistics-button').on('click', ev => { 
+            $.get('/api/statistic', data => {
+                $('#total-photos').text(data.totalPhotos + ' Photos');
+                $('#statistics').removeClass('d-none');
+                $('#statistics-button').hide();
+            });
+        });
+    </script>
+}

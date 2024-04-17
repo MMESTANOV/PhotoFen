@@ -1,0 +1,13 @@
+﻿@inject IPhotographerService photographerService
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="All">All Photos</a>
+    </li>
+    @if (this.User?.Identity?.IsAuthenticated ?? false)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Mine">My Photoss</a>
+        </li>
+    }
+</ul>

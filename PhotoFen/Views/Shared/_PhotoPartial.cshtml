@@ -1,0 +1,37 @@
+﻿@using PhotoFen.Extensions
+@model PhotoServiceModel
+@inject IPhotographerService photographerService
+@inject IPhotoService photoService
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.PhotoData" alt="Image">
+        <div class="card-body text-center">
+            <h4>@Model.Title</h4>
+            <h6>Title: <b>@Model.Title</b></h6>
+            <h6>Description: <b>@Model.Description</b></h6>
+            <br />
+            <a asp-controller="Photo" asp-action="Details" asp-route-id="@Model.Id"
+               asp-route-information="@Model.GetInformation()" class="btn btn-success">Details</a>
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                if (await photoService.HasPhotographerWithIdAsync(Model.Id, User.Id()))
+                {
+                    <a asp-controller="Photo" asp-action="Edit" asp-route-id="@Model.Id"
+                       class="btn btn-warning">Edit</a>
+                    <a asp-controller="Photo" asp-action="Delete" asp-route-id="@Model.Id"
+                       class="btn btn-danger">Delete</a>
+                }
+                
+                <p></p>
+                @if (!(await photographerService.ExistsPhotographerByIdAsync(User.Id())) == false)
+                {
+                    <form class="input-group-sm" asp-controller="Photo"
+                          asp-action="Like" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Like" />
+                    </form>
+                }
+            }
+        </div>
+    </div>
+</div>
