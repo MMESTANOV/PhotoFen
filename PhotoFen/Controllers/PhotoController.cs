@@ -123,6 +123,11 @@ namespace PhotoFen.Controllers
                 return View(model);
             }
 
+            int? photographerId = await photographerService.GetPhotographerIdAsync(User.Id());
+
+            int newHouseId = await photoService.AdPhotoAsync(model, photographerId ?? 0);
+
+
             return RedirectToAction(nameof(Mine));
         }
     }

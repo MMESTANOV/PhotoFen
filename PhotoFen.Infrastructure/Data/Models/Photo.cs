@@ -24,7 +24,6 @@ namespace PhotoFen.Infrastructure.Data.Models
         public string Description { get; set; } = null!;
 
         [Required]
-        [MaxLength(PhotoMaxValue)]
         [Comment("Photo data")]
         public byte[] PhotoData { get; set; } = null!;
 

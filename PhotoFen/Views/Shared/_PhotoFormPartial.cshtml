@@ -16,12 +16,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="PhotoData"></label>
-                <input asp-for="PhotoData" class="form-control" placeholder="Your fine URL here...">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Photo Data</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
                 <span asp-validation-for="PhotoData" class="small text-danger"></span>
             </div>
-           
             <div class="form-group">
-                <label asp-for="CategoryId"></label>
+                <label asp-for="CategoryId">Category</label>
                 <select asp-for="CategoryId" class="form-control">
                     @foreach (var category in Model.Categories)
                     {

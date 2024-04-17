@@ -20,10 +20,9 @@ namespace PhotoFen.Core.Models.Photo
         [DisplayName("Photo description")]
         public string Description { get; set; } = null!;
 
-        [Required]
-        [Range(PhotoMinValue, PhotoMaxValue)]
+        [Required] 
         [DisplayName("Photo data")]
-        public byte[] PhotoData { get; set; } = null!;
+        public string PhotoData { get; set; } = null!;
 
 
         [Required]

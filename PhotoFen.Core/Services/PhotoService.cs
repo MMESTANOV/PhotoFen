@@ -23,7 +23,10 @@ namespace PhotoFen.Core.Services
             {
                 Title = model.Title,
                 Description = model.Description,
-                TimeOfUpload = DateTime.Now        
+                TimeOfUpload = DateTime.Now,
+                PhotoData = FileToByteArray(model.PhotoData),
+                PhotohrapherId = photographerId,
+                CategoryId = model.CategoryId
             };
 
             await repository.AddAsync(newPhoto);
@@ -34,9 +37,9 @@ namespace PhotoFen.Core.Services
 
         public async Task<PhotoQueryServiceModel> AllAsync(
             string? category = null,
-            string? searchTerm = null, 
+            string? searchTerm = null,
             PhotoSorting sorting = PhotoSorting.Newest,
-            int currentPage = 1, 
+            int currentPage = 1,
             int photosPerPage = 1)
         {
             var photosToShow = repository.AllReadOnly<Photo>();
@@ -79,7 +82,7 @@ namespace PhotoFen.Core.Services
                 TotalPhotosCount = totalPhotos
             };
         }
-    
+
         public async Task<IEnumerable<PhotoCategoryServiceModel>> AllCategoriesAsync()
         {
             return await repository.AllReadOnly<Category>()
@@ -151,6 +154,21 @@ namespace PhotoFen.Core.Services
         public Task DeleteAsync(int photoId)
         {
             throw new NotImplementedException();
+        }
+
+
+
+
+        public static byte[] FileToByteArray(string fileName)
+        {
+            byte[] photoData;
+
+            using (FileStream fs = File.OpenRead(fileName))
+            {
+                var binaryReader = new BinaryReader(fs);
+                photoData = binaryReader.ReadBytes((int)fs.Length);
+            }
+            return photoData;
         }
     }
 }
