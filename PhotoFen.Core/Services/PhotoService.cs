@@ -24,7 +24,7 @@ namespace PhotoFen.Core.Services
                 Title = model.Title,
                 Description = model.Description,
                 TimeOfUpload = DateTime.Now,
-                PhotoData = FileToByteArray(model.PhotoData),
+                PhotoData = model.PhotoData,
                 PhotohrapherId = photographerId,
                 CategoryId = model.CategoryId
             };

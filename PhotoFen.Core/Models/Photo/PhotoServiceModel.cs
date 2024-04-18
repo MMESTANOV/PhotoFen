@@ -23,6 +23,6 @@ namespace PhotoFen.Core.Models.Photo
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
-        public byte[] PhotoData { get; set; } = null!;
+        public string PhotoData { get; set; } = null!;
     }
 }

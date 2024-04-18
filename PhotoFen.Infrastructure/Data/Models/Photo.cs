@@ -25,7 +25,7 @@ namespace PhotoFen.Infrastructure.Data.Models
 
         [Required]
         [Comment("Photo data")]
-        public byte[] PhotoData { get; set; } = null!;
+        public string PhotoData { get; set; } = null!;
 
         [Required]
         [Comment("Count of likes on the photo")]
