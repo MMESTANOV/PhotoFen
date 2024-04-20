@@ -5,6 +5,7 @@ using PhotoFen.Core.Models.Home;
 using PhotoFen.Core.Models.Photo;
 using PhotoFen.Infrastructure.Data.Common;
 using PhotoFen.Infrastructure.Data.Models;
+using System;
 
 namespace PhotoFen.Core.Services
 {
@@ -19,6 +20,29 @@ namespace PhotoFen.Core.Services
 
         public async Task<int> AdPhotoAsync(AddPhotoFormModel model, int photographerId)
         {
+
+            byte[]? dataImage = null;
+
+            if (model.ImageFile != null)
+            {
+                using (Stream fs = model.ImageFile.OpenReadStream())
+                {
+                    using (BinaryReader br = new BinaryReader(fs))
+                    {
+                        dataImage = br.ReadBytes((Int32)fs.Length);
+                    }
+                }
+
+                model.PhotoData = Convert.ToBase64String(dataImage,0,dataImage.Length);
+            }
+
+            if (model.PhotoData.Length > 2800000)
+            {
+
+                return default;
+            };
+
+
             Photo newPhoto = new Photo()
             {
                 Title = model.Title,

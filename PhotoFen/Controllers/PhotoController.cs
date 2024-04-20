@@ -116,16 +116,17 @@ namespace PhotoFen.Controllers
                 ModelState.AddModelError(nameof(model.CategoryId), "Category does not exists");
             }
 
-            if (!ModelState.IsValid)
-            {
-                model.Categories = await photoService.AllCategoriesAsync();
+            //if (!ModelState.IsValid)
+            //{
+            //    model.Categories = await photoService.AllCategoriesAsync();
 
-                return View(model);
-            }
+            //    return View(model);
+            //}
+
 
             int? photographerId = await photographerService.GetPhotographerIdAsync(User.Id());
 
-            int newHouseId = await photoService.AdPhotoAsync(model, photographerId ?? 0);
+            int newPhotoId = await photoService.AdPhotoAsync(model, photographerId ?? 0);
 
 
             return RedirectToAction(nameof(Mine));

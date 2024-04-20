@@ -8,6 +8,9 @@
 <h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
 
+<hr />
+<a asp-controller="Photo" asp-action="Add" class="btn btn-primary btn-lg align-items-center" role="button">Add Photo</a>
+
 @if (Model.Any() == false)
 {
     <h3 class="text-center">You have no photos yet!</h3>

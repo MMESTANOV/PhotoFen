@@ -4,10 +4,9 @@
 @inject IPhotoService photoService
 
 <div class="col-md-4">
-    <div class="card mb-3">
-        <img class="card-img-top" src="@Model.PhotoData" alt="Image">
+    <div class="card mb-3">       
         <div class="card-body text-center">
-            <h4>@Model.Title</h4>
+            <img src="data:image/jpg;base64,@Model.PhotoData" width="400" />
             <h6>Title: <b>@Model.Title</b></h6>
             <h6>Description: <b>@Model.Description</b></h6>
             <br />

@@ -9,28 +9,13 @@
     var photos = Model.ToList();
 }
 
-@if (!photos.Any())
-{
-    <div class="mt-4 p-5 bg-light">
-        <h1 class="display-4 text-center">Welcome to the world of photography!</h1>
-        <p class="lead text-center">
-            Here you can see interesting photos and share your own.
-        </p>
-        <hr class="my-4">
-        <p class="lead">
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <a asp-controller="Photo" asp-action="All" class="btn btn-primary btn-lg" role="button">All Photos</a>
-            }
-            @if (await photographerService.ExistsPhotographerByIdAsync(User.Id()))
-            {
-                <a asp-controller="Photo" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Photo</a>
-            }
-        </p>
-       
-
-    </div>
-}
+<div class="mt-4 p-5 bg-light">
+    <h1 class="display-4 text-center">Welcome to the world of photography!</h1>
+    <p class="lead text-center">
+        Here you can see interesting photos and share your own.
+    </p>
+    <hr class="my-4">
+</div>
 
 <div class="mb-5"></div>
 
@@ -62,27 +47,3 @@
 </div>
 
 <div class="mb-5"></div>
-
-<div class="row">
-    <div class="col-12 text-center">
-        <button class="btn btn-primary" id="statistics-button">Show Statistics</button>
-    </div>
-</div>
-
-<div class="mt-4 p-5 bg-light d-none" id="statistics">
-    <div class="row">
-        <h2 class="col-md-2 text-center" id="total-photos"></h2>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        $('#statistics-button').on('click', ev => { 
-            $.get('/api/statistic', data => {
-                $('#total-photos').text(data.totalPhotos + ' Photos');
-                $('#statistics').removeClass('d-none');
-                $('#statistics-button').hide();
-            });
-        });
-    </script>
-}

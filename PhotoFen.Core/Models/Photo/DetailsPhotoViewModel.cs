@@ -12,7 +12,7 @@ namespace PhotoFen.Core.Models.Photo
         public int CategoryId { get; set; }
         public string TimeOfUpload { get; set; } = null!;
         public int PhotohrapherId { get; set; }
-        public List<Comment> Comments { get; set; } = null!;
+        public List<Comment>? Comments { get; set; }
 
     }
 }
