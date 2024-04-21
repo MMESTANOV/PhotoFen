@@ -70,10 +70,6 @@ namespace PhotoFen.Controllers
 
             var model = await photoService.PhotoDetailsByIdAsync(id);
 
-            if (information != model.GetInformation())
-            {
-                return BadRequest();
-            }
 
             return View(model);
         }

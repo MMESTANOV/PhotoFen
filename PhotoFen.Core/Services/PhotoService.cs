@@ -6,6 +6,8 @@ using PhotoFen.Core.Models.Photo;
 using PhotoFen.Infrastructure.Data.Common;
 using PhotoFen.Infrastructure.Data.Models;
 using System;
+using static PhotoFen.Infrastructure.Data.Constants.DataConstants;
+
 
 namespace PhotoFen.Core.Services
 {
@@ -165,9 +167,25 @@ namespace PhotoFen.Core.Services
             return await repository.AllReadOnly<Photo>()
                 .AnyAsync(h => h.Id == id);
         }
-        public Task<DetailsPhotoServiceModel> PhotoDetailsByIdAsync(int id)
+        public async Task<DetailsPhotoServiceModel> PhotoDetailsByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<Photo>()
+                .Where(p => p.Id == id)
+                .Select(p => new DetailsPhotoServiceModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Category = p.Category.Name,
+                    Description = p.Description,
+                    TimeOfUpload = p.TimeOfUpload.ToString(DataTimeFormat),
+                    PhotoData = p.PhotoData,
+                    LikesCount = p.LikesCount,
+                    Photographer = new Models.Photographer.PhotographerServiceModel()
+                    {
+                        Name = p.Photographer.Name
+                    },
+                })
+                .FirstAsync();
         }
 
         public Task EditAsync(int photoId, AddPhotoFormModel model)

@@ -12,7 +12,7 @@ namespace System.Linq
                 {
                     Id = p.Id,
                     Title = p.Title, 
-                    Description = p.Description
+                    Description = p.Description                  
                 });
         }
     }

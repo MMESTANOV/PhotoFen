@@ -2,7 +2,7 @@
 
 namespace PhotoFen.Core.Models.Photo
 {
-    public class DetailsPhotoServiceModel : PhotoServiceModel
+    public class DetailsPhotoServiceModel : DetailsPhotoViewModel
     {
         public string Description { get; set; } = null!;
 

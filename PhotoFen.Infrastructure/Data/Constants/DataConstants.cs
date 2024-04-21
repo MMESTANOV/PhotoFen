@@ -25,6 +25,6 @@
         public const int PublicationContentMinLength = 100;
         public const int PublicationContentMaxLength = 5000;
 
-        public const string DataTimeFormat = "dddd, dd MMMM yyyy HH:mm";
+        public const string DataTimeFormat = "dd-MM-yyyy, HH:mm";
     }
 }

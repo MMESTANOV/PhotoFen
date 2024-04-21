@@ -1,0 +1,45 @@
+﻿@using PhotoFen.Extensions
+@model DetailsPhotoServiceModel
+@inject IPhotographerService photographerService
+@inject IPhotoService photoService
+
+@{
+    ViewBag.Title = "Photo Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="container" style="display:inline">
+    <div class="card-body text-center">
+            <img src="data:image/jpg;base64,@Model.PhotoData" />
+            <p style="font-size:25px;"><u>@Model.Title</u></p>
+            <p>Description: <b>@Model.Description</b></p>
+            <p>Category: <b>@Model.Category</b></p>
+            <p>Number of Likes: <b>@Model.LikesCount</b></p>
+            <p>Time Of Upload: <b>@Model.TimeOfUpload</b></p>
+            <p>Photographer: <b>@Model.Photographer.Name</b></p>
+            <div class="form-inline">
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    if (await photoService.HasPhotographerWithIdAsync(Model.Id, User.Id())
+                @* || User.IsAdmin() *@)
+                    {
+                        <a class="btn btn-warning" asp-controller="Photo" asp-action="Edit"
+                           asp-route-id="@Model.Id">Edit</a>
+                        <a class="ml-2 btn btn-danger" asp-controller="Photo" asp-action="Delete"
+                           asp-route-id="@Model.Id">Delete</a>
+                    }
+
+                    <p></p>
+                    @if (!(await photographerService.ExistsPhotographerByIdAsync(User.Id())) == false)
+                    {
+                        <form class="input-group-sm" asp-controller="Photo"
+                              asp-action="Like" asp-route-id="@Model.Id" method="post">
+                            <input class="btn btn-primary" type="submit" value="Like" />
+                        </form>
+                    }
+                }          
+        </div>
+    </div>
+</div>
