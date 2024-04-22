@@ -8,5 +8,6 @@ namespace PhotoFen.Core.Models.Home
 
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string PhotoData { get; set; } = string.Empty;
     }
 }

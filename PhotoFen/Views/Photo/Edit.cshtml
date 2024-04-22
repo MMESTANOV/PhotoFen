@@ -1,0 +1,13 @@
+﻿@model AddPhotoFormModel
+@{
+    ViewData["Title"] = "Edit Photo";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_PhotoFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

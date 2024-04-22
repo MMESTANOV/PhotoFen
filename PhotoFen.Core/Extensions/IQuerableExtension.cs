@@ -9,10 +9,11 @@ namespace System.Linq
         {
             return photos
                 .Select(p => new PhotoServiceModel()
-                {
+                {                
                     Id = p.Id,
                     Title = p.Title, 
-                    Description = p.Description                  
+                    Description = p.Description,
+                    PhotoData = p.PhotoData
                 });
         }
     }
