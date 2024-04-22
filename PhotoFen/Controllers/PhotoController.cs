@@ -127,5 +127,103 @@ namespace PhotoFen.Controllers
 
             return RedirectToAction(nameof(Mine));
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (await photoService.ExistsPhotoAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await photoService.HasPhotographerWithIdAsync(id, User.Id()) == false
+                /*&& User.IsAdmin() == false*/)
+            {
+                return Unauthorized();
+            }
+
+            var model = await photoService.GetPhotoFormModelByIdAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, AddPhotoFormModel model)
+        {
+            if (await photoService.ExistsPhotoAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await photoService.HasPhotographerWithIdAsync(id, User.Id()) == false
+                /*&& User.IsAdmin() == false*/)
+            {
+                return Unauthorized();
+            }
+
+            if (await photoService.CategoryExistsAsync(model.CategoryId) == false)
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Category does not exist");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.Categories = await photoService.AllCategoriesAsync();
+
+                return View(model);
+            }
+
+            await photoService.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Details), new { id, information = model.GetInformation() });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await photoService.ExistsPhotoAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await photoService.HasPhotographerWithIdAsync(id, User.Id()) == false
+                /*&& User.IsAdmin() == false*/)
+            {
+                return Unauthorized();
+            }
+
+            var photo = await photoService.PhotoDetailsByIdAsync(id);
+
+            var model = new DetailsPhotoViewModel()
+            {
+                Id = id,
+                Description = photo.Description,
+                TimeOfUpload = photo.TimeOfUpload,
+                Title = photo.Title,
+                PhotoData = photo.PhotoData,
+                CategoryId = photo.CategoryId,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DetailsPhotoViewModel model)
+        {
+            if (await photoService.ExistsPhotoAsync(model.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await photoService.HasPhotographerWithIdAsync(model.Id, User.Id()) == false
+                /*&& User.IsAdmin() == false*/)
+            {
+                return Unauthorized();
+            }
+
+            await photoService.DeleteAsync(model.Id);
+
+            return RedirectToAction(nameof(All));
+        }
+
     }
 }

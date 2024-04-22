@@ -30,6 +30,8 @@ namespace PhotoFen.Core.Contracts
 
         Task<DetailsPhotoServiceModel> PhotoDetailsByIdAsync(int id);
 
+        Task<AddPhotoFormModel?> GetPhotoFormModelByIdAsync(int id);
+
         Task<bool> HasPhotographerWithIdAsync(int photoId, string userId);
 
         Task EditAsync(int photoId, AddPhotoFormModel model);

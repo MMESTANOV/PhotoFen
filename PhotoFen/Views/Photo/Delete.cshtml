@@ -1,0 +1,21 @@
+﻿@model DetailsPhotoViewModel
+
+@{
+    ViewBag.Title = "Delete Photo";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form asp-action="Delete">
+    <div class="container" style="display:inline">
+    <div class="card-body text-center">
+            <img src="data:image/jpg;base64,@Model.PhotoData" width="800" />
+            <p style="font-size:25px;"><u>@Model.Title</u></p>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </div>
+        </div>     
+    </div>
+</form>

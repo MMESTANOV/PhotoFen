@@ -6,6 +6,7 @@ using PhotoFen.Core.Models.Photo;
 using PhotoFen.Infrastructure.Data.Common;
 using PhotoFen.Infrastructure.Data.Models;
 using System;
+using System.Xml.Linq;
 using static PhotoFen.Infrastructure.Data.Constants.DataConstants;
 
 
@@ -43,7 +44,6 @@ namespace PhotoFen.Core.Services
 
                 return default;
             };
-
 
             Photo newPhoto = new Photo()
             {
@@ -165,7 +165,7 @@ namespace PhotoFen.Core.Services
         public async Task<bool> ExistsPhotoAsync(int id)
         {
             return await repository.AllReadOnly<Photo>()
-                .AnyAsync(h => h.Id == id);
+                .AnyAsync(p => p.Id == id);
         }
         public async Task<DetailsPhotoServiceModel> PhotoDetailsByIdAsync(int id)
         {
@@ -188,17 +188,48 @@ namespace PhotoFen.Core.Services
                 .FirstAsync();
         }
 
-        public Task EditAsync(int photoId, AddPhotoFormModel model)
+        public async Task EditAsync(int photoId, AddPhotoFormModel model)
         {
-            throw new NotImplementedException();
+            var photoToEdit = await repository.GetByIdAsync<Photo>(photoId);
+
+            if (photoToEdit != null)
+            {
+                photoToEdit.Title = model.Title;
+                photoToEdit.Description = model.Description;
+                photoToEdit.TimeOfUpload = DateTime.Now;
+                photoToEdit.PhotoData = model.PhotoData;
+                photoToEdit.CategoryId = model.CategoryId;
+
+                await repository.SaveChangesAsync();
+            }
         }
 
-        public Task DeleteAsync(int photoId)
+        public async Task DeleteAsync(int photoId)
         {
-            throw new NotImplementedException();
+            await repository.DeleteAsync<Photo>(photoId);
+            await repository.SaveChangesAsync();
         }
 
+        public async Task<AddPhotoFormModel?> GetPhotoFormModelByIdAsync(int id)
+        {
+            var photo = await repository.AllReadOnly<Photo>()
+                .Where(p => p.Id == id)
+                .Select(p => new AddPhotoFormModel()
+                {
+                    Title = p.Title,
+                    Description = p.Description,
+                    PhotoData = p.PhotoData,
+                    CategoryId = p.CategoryId
+                })
+                .FirstOrDefaultAsync();
 
+            if (photo != null)
+            {
+                photo.Categories = await AllCategoriesAsync();
+            }
+
+            return photo;
+        }
 
 
         public static byte[] FileToByteArray(string fileName)
